@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head >
+    <script src="../scripts/angular.js"></script>
+    <link href="../Styles/styles.css" rel="stylesheet" />
+    <script src="../scripts/Basic.js"></script>
+</head>
+
+<body ng-app="myApp">
+    <div>{{ { name: 'WelcomePage', Location:'/Welcome.html'}.Location }}</div>  
+     <div>{{ ['Welcome','Index','Books','Details'][2] }}</div>  
+
+    <div ng-controller="myCtrl">        
+        <b style="color:blue">{{message}}
+        <img ng-src ="{{imagesrc}}", alt="Pokemon Pikachu" height="75px" /> </b> <br /> <br /> 
+        Number of rows: <input type="number" max={{pokemons.length}} min="0" ng-model="rowLimit" /><br/><br/>
+
+        Sort By: <select ng-model="sortBy">
+        <option value="Name">Name</option>
+        <option value="-power">Power</option>
+        </select>
+        <input type="text" ng-model="search.Name" placeholder="Search for pokemon" />
+        Exact Match: <input type="checkbox" ng-model="exactMatch" /> 
+        <table border="1">
+
+            <thead>
+                <tr >
+                    <th ng-click="sorting('Name')"> Name <div ng-class="changeClass('Name')"></div></th>
+                    <th ng-click="sorting('Type')"> Type<div ng-class="changeClass('Type')"></div></th>
+                    <th> Color</th>
+                    <th> Offense</th>
+                    <th> Defense</th>
+                    <th ng-click="sorting('power')"> Power<div ng-class="changeClass('power')"></div></th>
+                    <th> Attack/Defense</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!--<tr ng-repeat="poke in pokemons | limitTo:rowLimit:1 |orderBy:sortBy">-->
+                <tr ng-repeat="poke in pokemons | limitTo:rowLimit:1 |orderBy:sortBy:reverseSort |filter:search:exactMatch">
+                    <td>
+                        {{poke.Name}}
+                    </td>
+                    <td>
+                        {{poke.Type}}
+                    </td>
+                    <td>
+                        {{poke.Color}}
+                    </td>
+                    <td>
+                        {{poke.attack}}
+                    </td>
+                    <td>
+                        {{poke.defend}}
+                    </td>
+                    <td>
+                        {{poke.power | number:2}}
+                    </td>
+
+                    <td ng-hide="1">
+                        {{poke.power | currency:"#"}}
+                    </td>
+
+                    <td>
+                        <input type="button" value="Attack" ng-click="Attack(poke)" />||
+                        <input type="button" value="Defend" ng-click="Defend(poke)" />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <ul>
+            <li ng-repeat="highestEvolution in evolutions">
+                {{highestEvolution.Pokemon}}   <b style="color:green"> Index: {{$index}} </b>
+
+                <ul>
+                    <li ng-repeat="evolve in highestEvolution.Evolutions">
+                        {{evolve.name}}  <b style="color:green"> Index= {{$index}} </b> <b style="color:blue"> 
+                            ParentIndex={{$parent.$index}}</b>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
+    </div>
+</body>
+
+</html>
